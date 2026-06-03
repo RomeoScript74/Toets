@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Snelle Referentie Toets</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; font-size: 11px; background: white; color: black; padding: 10px; }
+h1 { font-size: 14px; text-align: center; border-bottom: 2px solid black; padding-bottom: 4px; margin-bottom: 8px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.card { border: 1px solid #333; padding: 6px; border-radius: 4px; }
+.card h2 { font-size: 11px; background: #333; color: white; padding: 2px 6px; margin: -6px -6px 5px -6px; border-radius: 3px 3px 0 0; }
+.cmd { font-family: monospace; font-size: 9px; background: #f0f0f0; padding: 2px 4px; margin: 2px 0; display: block; border-left: 2px solid #666; }
+ol, ul { padding-left: 14px; margin: 3px 0; }
+li { margin-bottom: 2px; font-size: 10px; }
+.warn { background: #fff3cd; border-left: 2px solid #f90; padding: 2px 4px; margin: 3px 0; font-size: 9px; }
+.tip { background: #d4edda; border-left: 2px solid #28a745; padding: 2px 4px; margin: 3px 0; font-size: 9px; }
+.full { grid-column: 1 / -1; }
+hr { border: none; border-top: 1px solid #ccc; margin: 4px 0; }
+.ip { font-family: monospace; font-weight: bold; }
+</style>
+</head>
+<body>
+<h1>⚡ SNELLE REFERENTIE — Praktijktoets P3-PLF | school.test | DC1: 172.16.1.1 | SRV1: 172.16.1.3 | RRAS1: 172.16.1.251 | Wachtwoord: Welkom01!</h1>
+
+<div class="grid">
+
+<div class="card">
+<h2>PLF08 — RRAS Routing (op niveau)</h2>
+<b>VMware eerst:</b>
+<ul>
+<li>RRAS1: voeg toe → VMnet2 + NAT adapter</li>
+<li>Core1: adapter → VMnet2</li>
+</ul>
+<b>IPs instellen (GUI: Network Connections → TCP/IPv4):</b>
+<ul>
+<li>RRAS1 VMnet2: <span class="ip">172.19.19.1/24</span></li>
+<li>Core1: <span class="ip">172.19.19.10/24</span> GW: 172.19.19.1</li>
+</ul>
+<b>RRAS installeren:</b>
+<ol>
+<li>Server Manager → Manage → Add Roles</li>
+<li>Remote Access → Add Features → Next</li>
+<li>Role Services: ✅ DirectAccess and VPN + ✅ Routing</li>
+<li>Install</li>
+</ol>
+<b>Routing aanzetten:</b>
+<ol>
+<li>Tools → Routing and Remote Access</li>
+<li>RMK op RRAS1 → Configure → Custom → ✅ LAN routing → Start</li>
+</ol>
+<span class="cmd">Set-NetIPInterface -Forwarding Enabled</span>
+<span class="cmd">ping 172.16.1.1  ← testen vanaf Core1</span>
+<div class="warn">⚠️ Als ping niet werkt → check firewall: netsh advfirewall firewall delete rule name="Block ICMP Inbound"</div>
+</div>
+
+<div class="card">
+<h2>PLF09 — Sites & Replicatie (boven niveau)</h2>
+<b>Alles doen vanuit DC1!</b>
+<ol>
+<li>Tools → AD Sites and Services</li>
+<li>RMK Sites → New Site → "Leeuwarden" → DEFAULTIPSITELINK → OK</li>
+<li>RMK Sites → New Site → "Groningen" → DEFAULTIPSITELINK → OK</li>
+<li>Default-First-Site-Name → Servers → RMK DC1 → Move → Leeuwarden</li>
+<li>RMK SRV1 → Move → Groningen</li>
+<li>Inter-Site Transports → RMK IP → New Site Link</li>
+<li>Naam: "Leeuwarden-Groningen" → beide sites toevoegen → OK</li>
+<li>RMK site link → Properties → Change Schedule</li>
+<li>Klik None → selecteer ma-vr 9:00-18:00 → Twice per Hour → OK</li>
+</ol>
+<span class="cmd">repadmin /syncall /AdeP</span>
+<span class="cmd">repadmin /showrepl  ← aantonen aan beoordelaar</span>
+<div class="tip">✅ "SyncAll terminated with no errors" = goed!</div>
+</div>
+
+<div class="card">
+<h2>PLF10 — Group Policies (boven niveau)</h2>
+<b>Gebruiker aanmaken:</b>
+<ol>
+<li>Tools → AD Users and Computers</li>
+<li>RMK school.test → New → OU → naam bijv. "Studenten"</li>
+<li>RMK OU → New → User → bob → Welkom01! → vinkje weg</li>
+</ol>
+<b>GPO "norun" aanmaken:</b>
+<ol>
+<li>Tools → Group Policy Management</li>
+<li>RMK OU Studenten → Create GPO → naam: "norun"</li>
+<li>RMK norun → Edit</li>
+<li>User Config → Policies → Admin Templates → System → Prevent access to command prompt → Enabled</li>
+<li>User Config → Policies → Admin Templates → Start Menu → Remove Run menu → Enabled</li>
+</ol>
+<b>GPO "wachtwoord" (op domein niveau!):</b>
+<ol>
+<li>RMK school.test → Create GPO → naam: "wachtwoord"</li>
+<li>Edit → Computer Config → Policies → Windows Settings → Security Settings → Account Policies → Password Policy</li>
+<li>Max password age: 20 | History: 3 | Min length: 10</li>
+<li>RMK GPO → Enforced aanzetten</li>
+</ol>
+<span class="cmd">gpupdate /force  ← op DC1 en PC1</span>
+<span class="cmd">Get-GPO -Name "wachtwoord" | Get-GPOReport -ReportType HTML -Path c:\report.html</span>
+<div class="warn">⚠️ Wachtwoordbeleid ALTIJD op school.test root, NIET op OU!</div>
+</div>
+
+<div class="card">
+<h2>Windows VPN — PPTP (op niveau)</h2>
+<b>Op RRAS1:</b>
+<ol>
+<li>Tools → Routing and Remote Access → RMK → Properties</li>
+<li>General: ✅ IPv4 Remote access server, LAN and demand-dial routing → Apply</li>
+<li>IPv4 tab: Static address pool → Add → 172.16.1.201 t/m 172.16.1.210</li>
+<li>Security tab: Authentication Methods → ✅ MS-CHAPv2</li>
+<li>Herstart RRAS service</li>
+<li>Ports → Properties → WAN Miniport PPTP → Configure → ✅ Remote access connections</li>
+</ol>
+<b>Gebruiker toegang geven (op DC1):</b>
+<ol>
+<li>ADUC → gebruiker → Properties → Dial-in → Allow access</li>
+</ol>
+<b>VPN client instellen (op SRV1 of PC1):</b>
+<ol>
+<li>Network Connections → Set up new connection → Connect to workplace → VPN</li>
+<li>Internet address: 172.16.2.251 | Naam: PPTP-VPN</li>
+<li>Properties → Security → Type: PPTP → EAP-MSCHAPv2</li>
+<li>Verbinden met domein gebruiker</li>
+</ol>
+<div class="warn">⚠️ Firewall: TCP 1723 + GRE protocol 47 openzetten op RRAS1</div>
+<span class="cmd">netsh advfirewall firewall add rule name="PPTP" protocol=TCP dir=in localport=1723 action=allow</span>
+<span class="cmd">netsh advfirewall firewall add rule name="GRE" protocol=47 dir=in action=allow</span>
+</div>
+
+<div class="card full">
+<h2>PLF12 — OpenVPN Linux (op niveau)</h2>
+<div class="grid">
+<div>
+<b>Server (rocky1) — voorbereiding:</b>
+<span class="cmd">sudo rm -f /etc/yum.repos.d/Rocky-*</span>
+<span class="cmd">sudo dnf reinstall rocky-repos --nogpgcheck --repofrompath base,https://dl.rockylinux.org/pub/rocky/8/BaseOS/x86_64/os/ -y</span>
+<span class="cmd">sudo dnf install epel-release -y</span>
+<span class="cmd">sudo dnf install openvpn easy-rsa -y</span>
+<b>Netwerk Rocky Linux:</b>
+<span class="cmd">sudo nmcli con mod ens160 ipv4.addresses 192.168.1.10/24 ipv4.method manual</span>
+<span class="cmd">sudo nmcli con down ens160 && sudo nmcli con up ens160</span>
+<span class="cmd">sudo nmcli con add type ethernet ifname ens224 con-name ens224 ipv4.method auto && sudo nmcli con up ens224</span>
+<b>EasyRSA certificaten:</b>
+<span class="cmd">sudo cp -rp /usr/share/easy-rsa/3.0/ /etc/openvpn/server/easyrsa3.0</span>
+<span class="cmd">sudo cp -p /usr/share/doc/easy-rsa/vars.example /etc/openvpn/server/easyrsa3.0/vars</span>
+<span class="cmd">sudo nano /etc/openvpn/server/easyrsa3.0/vars  ← pas aan: NL, Utrecht, etc.</span>
+<span class="cmd">cd /etc/openvpn/server/easyrsa3.0</span>
+<span class="cmd">./easyrsa clean-all && ./easyrsa gen-dh && ./easyrsa build-ca</span>
+<span class="cmd">./easyrsa build-server-full server1 nopass</span>
+<span class="cmd">./easyrsa build-client-full client1</span>
+<span class="cmd">openvpn --genkey --secret /etc/openvpn/server/ta.key</span>
+</div>
+<div>
+<b>Certs kopiëren naar client:</b>
+<span class="cmd">sudo scp -p /etc/openvpn/server/ta.key /etc/openvpn/server/easyrsa3.0/pki/ca.crt /etc/openvpn/server/easyrsa3.0/pki/*/client1.{crt,key} gebruiker@IP_CLIENT:/tmp</span>
+<b>Server starten:</b>
+<span class="cmd">sudo nano /etc/openvpn/server/server.ovpn  ← zie cheatsheet voor inhoud</span>
+<span class="cmd">sudo firewall-cmd --add-service=openvpn --permanent && sudo firewall-cmd --reload</span>
+<span class="cmd">sudo openvpn --cd /etc/openvpn/server --config server.ovpn</span>
+<b>Client (rocky2):</b>
+<span class="cmd">sudo dnf install epel-release -y && sudo dnf install openvpn -y</span>
+<span class="cmd">sudo mv /tmp/ta.key /tmp/ca.crt /tmp/client1.* /etc/openvpn/client</span>
+<span class="cmd">sudo chown root:root /etc/openvpn/client/{ta.key,ca.crt,client1.key,client1.crt}</span>
+<span class="cmd">sudo chmod u=r,o-rwx /etc/openvpn/client/{ta.key,ca.crt,client1.key,client1.crt}</span>
+<span class="cmd">sudo nano /etc/openvpn/client/client1.ovpn  ← zie cheatsheet voor inhoud</span>
+<span class="cmd">sudo openvpn --cd /etc/openvpn/client --config client1.ovpn</span>
+<b>Routing via VPN:</b>
+<span class="cmd">sudo sysctl -w net.ipv4.ip_forward=1</span>
+<span class="cmd">sudo firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -i tun+ -j ACCEPT --permanent && sudo firewall-cmd --reload</span>
+<div class="tip">✅ Test: ping 192.168.1.1 vanaf rocky2 via VPN</div>
+</div>
+</div>
+</div>
+
+<div class="card full">
+<h2>Basis — Domein aanmaken & PC joinen</h2>
+<div class="grid">
+<div>
+<b>Domein aanmaken:</b>
+<ol>
+<li>Server Manager → Manage → Add Roles → AD DS → Install</li>
+<li>Geel ⚠️ → Promote → Add new forest → school.test → DSRM ww → Install</li>
+<li>Na herstart: inloggen als SCHOOL\Administrator</li>
+</ol>
+<b>IP instellen GUI:</b>
+<ol>
+<li>RMK netwerk icoon → Open Network settings → Change adapter options</li>
+<li>RMK adapter → Properties → TCP/IPv4 → IP invullen → OK</li>
+</ol>
+</div>
+<div>
+<b>PC aan domein joinen:</b>
+<span class="cmd">Add-Computer -DomainName "school.test" -Credential SCHOOL\Administrator -Restart</span>
+<b>Of GUI:</b>
+<ol>
+<li>RMK Start → System → Rename this PC (advanced) → Change</li>
+<li>Domain: school.test → OK → SCHOOL\Administrator → Restart</li>
+</ol>
+<b>Handige commando's:</b>
+<span class="cmd">Get-ADDomain | Get-ADDomainController -Filter * | repadmin /syncall /AdeP | gpupdate /force</span>
+<span class="cmd">ping IP | ipconfig | Get-NetIPConfiguration | Get-NetAdapter</span>
+</div>
+</div>
+</div>
+
+</div>
+</body>
+</html>
