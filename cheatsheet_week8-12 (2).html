@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cheatsheet Week 8-12</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #ff6b35;
+    --accent3: #7c3aed;
+    --green: #10b981;
+    --yellow: #fbbf24;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --code-bg: #0d1117;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 20px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    background: linear-gradient(135deg, #111827 0%, #0f1a2e 100%);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent3), var(--accent), var(--green));
+  }
+
+  .header h1 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: white;
+  }
+
+  .header p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 4px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .week-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .w8 { background: #1e3a5f; color: var(--accent); }
+  .w9 { background: #1a3d2e; color: var(--green); }
+  .w10 { background: #3b2a1a; color: var(--yellow); }
+  .w11 { background: #2d1b4e; color: #a78bfa; }
+  .w12 { background: #3b1f1f; color: var(--accent2); }
+
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .card-body {
+    padding: 12px 14px;
+  }
+
+  .section {
+    margin-bottom: 10px;
+  }
+
+  .section:last-child {
+    margin-bottom: 0;
+  }
+
+  .section-title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+
+  ol, ul {
+    padding-left: 16px;
+  }
+
+  li {
+    margin-bottom: 3px;
+    color: var(--text);
+    font-size: 12px;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  .cmd {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 10px;
+    margin: 4px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+  }
+
+  .tip {
+    background: #1a2a1a;
+    border-left: 2px solid var(--green);
+    padding: 5px 8px;
+    border-radius: 0 4px 4px 0;
+    font-size: 11px;
+    color: #86efac;
+    margin: 5px 0;
+  }
+
+  .warn {
+    background: #2a1a0a;
+    border-left: 2px solid var(--accent2);
+    padding: 5px 8px;
+    border-radius: 0 4px 4px 0;
+    font-size: 11px;
+    color: #fdba74;
+    margin: 5px 0;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 8px 0;
+  }
+
+  .full-width {
+    grid-column: 1 / -1;
+  }
+
+  .inline-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  strong { color: white; font-weight: 700; }
+
+  .path {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--yellow);
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-right: 3px;
+    font-weight: 700;
+  }
+
+  .tag-gui { background: #1e3a5f; color: var(--accent); }
+  .tag-ps { background: #1a3d2e; color: var(--green); }
+
+  @media print {
+    body { background: white; color: black; padding: 10px; font-size: 11px; }
+    .card { border: 1px solid #ccc; break-inside: avoid; }
+    .card-header { background: #f0f0f0 !important; }
+    code, .cmd { background: #f5f5f5; color: #333; }
+    .tip { background: #f0fff0; }
+    .warn { background: #fff8f0; }
+    .header { background: #f0f0f0; }
+    * { color: black !important; }
+    .week-badge { border: 1px solid #ccc; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📋 Cheatsheet Systeembeheer — Week 8 t/m 12</h1>
+  <p>school.test domein &nbsp;|&nbsp; DC1: 172.16.1.1 &nbsp;|&nbsp; SRV1: 172.16.1.3 &nbsp;|&nbsp; RRAS1: 172.16.1.251 &nbsp;|&nbsp; PC1: 172.16.1.10</p>
+</div>
+
+<div class="grid">
+
+  <!-- WEEK 8 -->
+  <div class="card">
+    <div class="card-header">
+      <span class="week-badge w8">WEEK 8</span>
+      <span class="card-title">Directory Services — Basisomgeving</span>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-title">AD DS installeren & DC promoveren</div>
+        <ol>
+          <li>Server Manager → <strong>Add Roles and Features</strong></li>
+          <li>Kies <strong>Active Directory Domain Services</strong></li>
+          <li>Na installatie: geel ⚠️ → <strong>Promote this server to a domain controller</strong></li>
+          <li>Add new forest → domeinnaam: <code>school.test</code></li>
+          <li>DSRM wachtwoord instellen → Install</li>
+        </ol>
+      </div>
+      <hr class="divider">
+      <div class="section">
+        <div class="section-title">RRAS installeren (router)</div>
+        <ol>
+          <li>Server Manager → Add Roles → <strong>Remote Access</strong></li>
+          <li>Role services: <strong>Routing</strong> aanvinken</li>
+          <li>Tools → <strong>Routing and Remote Access</strong></li>
+          <li>Rechtermuisklik → Configure and Enable → <strong>Custom</strong></li>
+          <li>Vink aan: <strong>LAN routing</strong></li>
+        </ol>
+      </div>
+      <hr class="divider">
+      <div class="section">
+        <div class="section-title">RIP toevoegen aan RRAS</div>
+        <ol>
+          <li>RRAS → IPv4 → rechtermuisklik <strong>General</strong> → New Routing Protocol</li>
+          <li>Kies <strong>RIP Version 2</strong></li>
+          <li>Rechtermuisklik RIP → New Interface → selecteer elke interface</li>
+        </ol>
+        <div class="tip">💡 Internet interface NIET toevoegen aan RIP</div>
+      </div>
+      <hr class="divider">
+      <div class="section">
+        <div class="section-title">Nuttige commando's</div>
+        <div class="cmd">route print</div>
+        <div class="cmd">ping 172.16.1.1</div>
+        <div class="cmd">Get-ADDomain</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 9 -->
+  <div class="card">
+    <div class="card-header">
+      <span class="week-badge w9">WEEK 9</span>
+      <span class="card-title">Directory Services — Sites & Replicatie</span>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-title">2e DC toevoegen (op SRV1)</div>
+        <ol>
+          <li>Server Manager → Add Roles → <strong>AD DS</strong></li>
+          <li>Geel ⚠️ → Promote → <strong>Add a domain controller to existing domain</strong></li>
+          <li>Domain: <code>school.test</code> → Change → SCHOOL\Administrator</li>
+          <li>DSRM wachtwoord → Next → Install</li>
+        </ol>
+        <div class="cmd">Get-ADDomainController -Filter *</div>
+      </div>
+      <hr class="divider">
+      <div class="section">
+        <div class="section-title">Sites aanmaken</div>
+        <ol>
+          <li>Tools → <strong>Active Directory Sites and Services</strong></li>
+          <li>Rechtermuisklik <strong>Sites</strong> → New Site</li>
+          <li>Naam: <code>Rotterdam</code> → DEFAULTIPSITELINK → OK</li>
+          <li>Herhaal voor <code>Amersfoort</code></li>
+        </ol>
+      </div>
+      <hr class="divider">
+      <div class="section">
+        <div class="section-title">Subnetten koppelen</div>
+        <ol>
+          <li>Rechtermuisklik <strong>Subnets</strong> → New Subnet</li>
+          <li><code>172.16.1.0/24</code> → Rotterdam</li>
+          <li><code>192.168.5.0/24</code> → Amersfoort</li>
+        </ol>
+      </div>
+      <hr class="divider">
+      <div class="section">
+        <div class="section-title">DC's verplaatsen naar site</div>
+        <ol>
+          <li>Default-First-Site-Name → Servers</li>
+          <li>Rechtermuisklik <strong>DC1</strong> → Move → Rotterdam</li>
+          <li>Rechtermuisklik <strong>SRV1</strong> → Move → Amersfoort</li>
+        </ol>
+      </div>
+      <hr class="divider">
+      <div class="section">
+        <div class="section-title">Site Link aanmaken</div>
+        <ol>
+          <li>Inter-Site Transports → rechtermuisklik <strong>IP</strong> → New Site Link</li>
+          <li>Naam: <code>Rotterdam-Amersfoort</code></li>
+          <li>Beide sites toevoegen → OK</li>
+          <li>Properties: Cost <code>100</code>, Interval <code>15</code> min</li>
+        </ol>
+        <div class="cmd">repadmin /syncall /AdeP</div>
+        <div class="tip">💡 "SyncAll terminated with no errors" = replicatie werkt</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 10 -->
+  <div class="card">
+    <div class="card-header">
+      <span class="week-badge w10">WEEK 10</span>
+      <span class="card-title">Group Policies (GPO)</span>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-title">GPO aanmaken & koppelen</div>
+        <ol>
+          <li>Tools → <strong>Group Policy Management</strong></li>
+          <li>Rechtermuisklik op OU → <strong>Create a GPO in this domain, and Link it here</strong></li>
+          <li>Naam geven → OK</li>
+          <li>Rechtermuisklik op GPO → <strong>Edit</strong></li>
+          <li>Instelling zoeken → Enabled → OK</li>
+        </ol>
+        <div class="cmd">gpupdate /force</div>
+      </div>
+      <hr class="divider">
+      <div class="section">
+        <div class="section-title">LSDOU Hiërarchie (volgorde toepassing)</div>
+        <div class="warn">L → S → D → O → U &nbsp; (laatste wint bij conflict)</div>
+        <ul>
+          <li><strong>L</strong>ocal → <strong>S</strong>ite → <strong>D</strong>omain → <strong>O</strong>U → sub-<strong>U</strong></li>
+          <li>OU policy overschrijft Domain policy</li>
+        </ul>
+      </div>
+      <hr class="divider">
+      <div class="section">
+        <div class="section-title">Block Inheritance</div>
+        <ol>
+          <li>Rechtermuisklik op OU → <strong>Block Inheritance</strong></li>
+          <li>Blauw ❕ verschijnt op de OU</li>
+          <li>GPOs van hoger niveau worden NIET geërvd</li>
+        </ol>
+      </div>
+      <hr class="divider">
+      <div class="section">
+        <div class="section-title">Enforcement (wint van Block Inheritance)</div>
+        <ol>
+          <li>Rechtermuisklik op GPO → <strong>Enforced</strong></li>
+          <li>Slotje 🔒 verschijnt op de GPO</li>
+          <li>Block Inheritance kan dit NIET stoppen</li>
+        </ol>
+        <div class="tip">💡 Enforced GPO wint ALTIJD, ook bij Block Inheritance</div>
+      </div>
+      <hr class="divider">
+      <div class="section">
+        <div class="section-title">Veelgebruikte GPO instellingen</div>
+        <ul>
+          <li>Control Panel blokkeren: <span class="path">User Config → Policies → Admin Templates → Control Panel → Prohibit access</span></li>
+          <li>Run menu verbergen: <span class="path">User Config → Policies → Admin Templates → Start Menu → Remove Run menu</span></li>
+        </ul>
+        <div class="cmd">gpresult /r</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 11 -->
+  <div class="card">
+    <div class="card-header">
+      <span class="week-badge w11">WEEK 11</span>
+      <span class="card-title">PKI & Windows Firewall</span>
+    </div>
+    <div class="card-body">
+      <div class="section">
+        <div class="section-title">CA installeren (Root CA)</div>
+        <ol>
+          <li>Server Manager → Add Roles → <strong>Active Directory Certificate Services</strong></li>
+          <li>Role Services: <strong>Certification Authority</strong></li>
+          <li>Na installatie: geel ⚠️ → Configure AD CS</li>
+          <li>CA Type: <strong>Enterprise CA</strong></li>
+          <li>CA Type: <strong>Root CA</strong></li>
+          <li>Create new private key → Configure</li>
+        </ol>
+        <div class="tip">💡 Enterprise CA = geïntegreerd met AD, automatisch vertrouwd</div>
+      </div>
+      <hr class="divider">
+      <div class="section">
+        <div class="section-title">Firewall — Inbound Rule aanmaken</div>
+        <ol>
+          <li>Tools → <strong>Windows Defender Firewall with Advanced Security</strong></li>
+          <li>Inbound Rules → <strong>New Rule</strong></li>
+          <li>Type kiezen: Port / Program / Custom</li>
+          <li>Protocol & poort instellen</li>
+          <li>Allow / Block kiezen</li>
+          <li>Profielen selecteren (Domain/Private/Public)</li>
+          <li>Naam geven → Finish</li>
+        </ol>
+      </div>
+      <hr class="divider">
+      <div class="section">
+        <div class="section-title">Veelgebruikte poorten</div>
+        <div class="inline-grid">
+          <div>
+            <ul>
+              <li>RDP: <code>3389 TCP</code></li>
+              <li>HTTP: <code>80 TCP</code></li>
+              <li>HTTPS: <code>443 TCP</code></li>
+            </ul>
+          </div>
+          <div>
+            <ul>
+              <li>DNS: <code>53 UDP/TCP</code></li>
+              <li>PPTP VPN: <code>1723 TCP</code></li>
+              <li>LDAP: <code>389 TCP</code></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr class="divider">
+      <div class="section">
+        <div class="section-title">Connection Security Rule (IPsec)</div>
+        <ol>
+          <li>Connection Security Rules → New Rule</li>
+          <li>Type: <strong>Isolation</strong></li>
+          <li>Require authentication in+out</li>
+          <li>Kerberos V5 → alle profielen → naam</li>
+        </ol>
+        <div class="warn">⚠️ Block wint altijd van Allow bij conflicterende regels</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 12 -->
+  <div class="card full-width">
+    <div class="card-header">
+      <span class="week-badge w12">WEEK 12</span>
+      <span class="card-title">Virtual Private Networking (VPN)</span>
+    </div>
+    <div class="card-body">
+      <div class="inline-grid">
+        <div>
+          <div class="section">
+            <div class="section-title">Wat is VPN en wie doet wat?</div>
+            <div class="tip">💡 VPN = een beveiligde verbinding van buiten naar binnen het netwerk<br>
+            - <strong>RRAS1</strong> = de VPN server (wacht op verbindingen van buiten)<br>
+            - <strong>SRV1 of PC1</strong> = de VPN client (maakt verbinding van buiten)</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Stap 1 — RRAS1 instellen als VPN server</div>
+            <div class="tip">💡 Je zet RRAS1 aan als remote access server zodat hij VPN verbindingen kan ontvangen</div>
+            <ol>
+              <li>Tools → <strong>Routing and Remote Access</strong></li>
+              <li>Rechtermuisklik op RRAS1 → <strong>All Tasks → Stop</strong> (service stoppen)</li>
+              <li>Rechtermuisklik → <strong>Properties</strong></li>
+              <li>General tab → vink aan: <strong>IPv4 Remote access server</strong></li>
+              <li>Verander naar <strong>LAN and demand-dial routing</strong> → Apply</li>
+            </ol>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Stap 2 — IP pool instellen</div>
+            <div class="tip">💡 Dit zijn de IPs die VPN clients krijgen als ze verbinden. Ze mogen niet overlappen met andere IPs in je netwerk!</div>
+            <ol>
+              <li>Klik op tabblad <strong>IPv4</strong></li>
+              <li>Kies <strong>Static address pool</strong></li>
+              <li>Klik <strong>Add</strong></li>
+              <li>Start: <code>172.16.1.201</code> → End: <code>172.16.1.210</code></li>
+              <li>OK → dan RRAS service herstarten</li>
+            </ol>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Stap 3 — Ports configureren</div>
+            <div class="tip">💡 Ports zijn de "deuren" waar VPN verbindingen binnenkomen. Je moet aangeven welke soort VPN verbindingen zijn toegestaan</div>
+            <ol>
+              <li>In RRAS → klik op <strong>Ports</strong> in de linkerkolom</li>
+              <li>Rechtermuisklik → <strong>Properties</strong></li>
+              <li>Klik op <strong>WAN Miniport (PPTP)</strong> → <strong>Configure</strong></li>
+              <li>Vink aan: ✅ <strong>Remote access connections (inbound only)</strong></li>
+              <li>Vink aan: ✅ <strong>Demand-dial routing connections</strong></li>
+              <li>OK</li>
+              <li>Herhaal voor <strong>WAN Miniport (SSTP)</strong> als je SSTP ook wilt</li>
+            </ol>
+            <div class="warn">⚠️ Onder "Used by" moet RAS/Routing staan — anders werkt VPN niet</div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-title">Stap 4 — Gebruiker toegang geven</div>
+            <div class="tip">💡 Standaard heeft niemand VPN toegang. Je moet dit per gebruiker instellen in Active Directory</div>
+            <ol>
+              <li>Ga naar <strong>DC1</strong></li>
+              <li>Tools → <strong>Active Directory Users and Computers</strong></li>
+              <li>Zoek de gebruiker op → rechtermuisklik → <strong>Properties</strong></li>
+              <li>Klik op tabblad <strong>Dial-in</strong></li>
+              <li>Bij Network Access Permission kies: <strong>Allow access</strong></li>
+              <li>OK</li>
+            </ol>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Stap 5 — VPN client instellen (op SRV1 of PC1)</div>
+            <div class="tip">💡 Dit maak je de VPN verbinding aan op de client computer. Het internet address is het IP van RRAS1 aan de buitenkant</div>
+            <ol>
+              <li>Rechtermuisklik netwerk icoon → <strong>Open Network & Internet settings</strong></li>
+              <li>Klik <strong>VPN</strong> → <strong>Add a VPN connection</strong></li>
+              <li>Provider: <strong>Windows (built-in)</strong></li>
+              <li>Connection name: <code>PPTP-VPN</code></li>
+              <li>Server name: <code>172.16.2.251</code> (extern IP van RRAS1)</li>
+              <li>VPN type: <strong>PPTP</strong></li>
+              <li>Username + password invullen</li>
+              <li>Save → Connect</li>
+            </ol>
+            <div class="warn">⚠️ Als verbinding mislukt → check firewall op RRAS1:</div>
+            <div class="cmd">netsh advfirewall firewall add rule name="PPTP" protocol=TCP dir=in localport=1723 action=allow</div>
+            <div class="cmd">netsh advfirewall firewall add rule name="GRE" protocol=47 dir=in action=allow</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">VPN Protocol vergelijking</div>
+            <ul>
+              <li><strong>PPTP</strong> — makkelijkst maar onveilig (poort 1723)</li>
+              <li><strong>L2TP/IPsec</strong> — veiliger, gebruikt pre-shared key (poort 1701)</li>
+              <li><strong>SSTP</strong> — via HTTPS poort 443, werkt door firewalls</li>
+              <li><strong>IKEv2</strong> — snel en stabiel, goed voor mobiel</li>
+            </ul>
+            <div class="tip">💡 SSTP werkt het best door NAT/firewall heen want poort 443 is altijd open</div>
+            <div class="warn">⚠️ PPTP nooit gebruiken in productie — te makkelijk te hacken!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLF08 OEFENTOETS -->
+  <div class="card full-width">
+    <div class="card-header">
+      <span class="week-badge" style="background:#1f2d1a;color:#4ade80;">PLF08</span>
+      <span class="card-title">Oefentoets — Routing tussen netwerken (op niveau)</span>
+    </div>
+    <div class="card-body">
+      <div class="inline-grid">
+        <div>
+          <div class="section">
+            <div class="section-title">Logica — begrijp dit eerst!</div>
+            <ul>
+              <li>Core1 en DC1 zitten op <strong>verschillende netwerken</strong></li>
+              <li>RRAS1 moet op <strong>beide netwerken</strong> een adapter hebben</li>
+              <li>Dan pas kan RRAS1 verkeer doorsturen</li>
+            </ul>
+            <div class="warn">Volgorde: 1) Adapters in VMware → 2) IPs instellen → 3) RRAS installeren → 4) Routing aanzetten</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Stap 1 — VMware instellen (buiten VM)</div>
+            <ul>
+              <li>RRAS1 Settings → Add → Network Adapter → <strong>Custom VMnet2</strong></li>
+              <li>RRAS1 Settings → Add → Network Adapter → <strong>NAT (VMnet8)</strong></li>
+              <li>Core1 Settings → Network Adapter → <strong>Custom VMnet2</strong></li>
+            </ul>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Stap 2 — IP instellen op RRAS1</div>
+            <div class="tip">💡 Eerst uitzoeken welke adapter VMnet2 is met Get-NetAdapter</div>
+            <div class="cmd">Get-NetAdapter</div>
+            <div class="cmd">New-NetIPAddress -InterfaceAlias "EthernetX" -IPAddress 172.19.19.1 -PrefixLength 24</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Stap 3 — IP instellen op Core1</div>
+            <div class="cmd">New-NetIPAddress -InterfaceAlias "Ethernet0" -IPAddress 172.19.19.10 -PrefixLength 24 -DefaultGateway 172.19.19.1</div>
+            <div class="cmd">ping 172.19.19.1</div>
+            <div class="tip">💡 Als ping werkt → RRAS1 en Core1 zien elkaar</div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-title">Stap 4 — RRAS installeren op RRAS1</div>
+            <ol>
+              <li>Server Manager → <strong>Manage</strong> (rechtsboven) → <strong>Add Roles and Features</strong></li>
+              <li>Next → Next → Next (bij Server Selection)</li>
+              <li>Bij Server Roles: vink aan <strong>Remote Access</strong> → Add Features → Next</li>
+              <li>Next → Next (bij Role Services)</li>
+              <li>Vink aan: <strong>DirectAccess and VPN (RAS)</strong> + <strong>Routing</strong></li>
+              <li>Web Server Role: laat default staan → Next → <strong>Install</strong></li>
+            </ol>
+            <div class="tip">💡 Na installatie ga je naar Tools → Routing and Remote Access</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Stap 5 — Routing aanzetten</div>
+            <ol>
+              <li>Tools → <strong>Routing and Remote Access</strong></li>
+              <li>Rechtermuisklik op RRAS1 → <strong>Configure and Enable</strong></li>
+              <li>Kies <strong>Custom configuration</strong></li>
+              <li>Vink aan: <strong>LAN routing</strong></li>
+              <li>Finish → <strong>Start Service</strong></li>
+            </ol>
+            <div class="cmd">Set-NetIPInterface -Forwarding Enabled</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Stap 6 — NAT instellen (internet voor Core1/DC1)</div>
+            <ol>
+              <li>RRAS → IPv4 → rechtermuisklik <strong>NAT</strong> → <strong>New Interface</strong></li>
+              <li>Kies de <strong>Internet/NAT adapter</strong> (VMnet8)</li>
+              <li>Kies <strong>Public interface connected to the Internet</strong></li>
+              <li>Vink aan: <strong>Enable NAT on this interface</strong> → OK</li>
+              <li>Rechtermuisklik NAT → New Interface → kies <strong>VMnet2 adapter</strong></li>
+              <li>Kies <strong>Private interface connected to private network</strong> → OK</li>
+              <li>Herhaal stap 5-6 voor de <strong>Rotterdam adapter</strong></li>
+            </ol>
+            <div class="tip">💡 Public = internet kant | Private = interne netwerken</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Stap 7 — Firewall (als ping niet werkt)</div>
+            <div class="cmd">netsh advfirewall firewall add rule name="Allow ICMP" protocol=icmpv4:8,any dir=in action=allow</div>
+            <div class="warn">⚠️ Check of er geen "Block ICMP" regel bestaat die wint!</div>
+            <div class="cmd">netsh advfirewall firewall show rule name=all | findstr -i icmp</div>
+            <div class="cmd">netsh advfirewall firewall delete rule name="Block ICMP Inbound"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLF10 OEFENTOETS -->
+  <div class="card full-width">
+    <div class="card-header">
+      <span class="week-badge" style="background:#1f2d1a;color:#4ade80;">PLF10</span>
+      <span class="card-title">Oefentoets — GPO boven niveau</span>
+    </div>
+    <div class="card-body">
+      <div class="inline-grid">
+        <div>
+          <div class="section">
+            <div class="section-title">GPO "norun" — Run/CMD blokkeren voor bob</div>
+            <ol>
+              <li>ADUC → maak gebruiker <code>bob</code> aan in een OU</li>
+              <li>Group Policy Management → rechtermuisklik op die OU → <strong>Create GPO and Link</strong> → naam: <code>norun</code></li>
+              <li>Edit → User Config → Policies → Admin Templates → System</li>
+              <li><strong>Prevent access to the command prompt</strong> → Enabled</li>
+              <li>User Config → Policies → Admin Templates → Start Menu</li>
+              <li><strong>Remove Run menu from Start Menu</strong> → Enabled</li>
+            </ol>
+            <div class="cmd">gpupdate /force</div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-title">GPO "wachtwoord" — Wachtwoordbeleid</div>
+            <div class="warn">⚠️ Wachtwoordbeleid MOET in Default Domain Policy of een GPO gelinkt aan het domein root — NIET aan een OU!</div>
+            <ol>
+              <li>Group Policy Management → rechtermuisklik op <strong>school.test</strong> → Create GPO → naam: <code>wachtwoord</code></li>
+              <li>Edit → Computer Config → Policies → Windows Settings → Security Settings → <strong>Account Policies → Password Policy</strong></li>
+              <li>Maximum password age: <code>20</code> dagen</li>
+              <li>Password history: <code>3</code></li>
+              <li>Minimum password length: <code>10</code></li>
+              <li>Rechtermuisklik op GPO → <strong>Enforced</strong> aanzetten</li>
+            </ol>
+            <div class="section-title" style="margin-top:8px;">Aantonen</div>
+            <div class="cmd">Get-GPO -Name "wachtwoord" | Get-GPOReport -ReportType HTML -Path c:\report.html</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLF12 OpenVPN Linux -->
+  <div class="card full-width">
+    <div class="card-header">
+      <span class="week-badge" style="background:#1f2d1a;color:#4ade80;">PLF12</span>
+      <span class="card-title">OpenVPN op Rocky Linux — Server & Client</span>
+    </div>
+    <div class="card-body">
+      <div class="inline-grid">
+        <div>
+          <div class="section">
+            <div class="section-title">Stap 1 — Repos fixen & Software installeren</div>
+            <div class="tip">💡 Dit herstel je de software bronnen zodat je pakketten kunt installeren. Altijd als eerste doen op Rocky Linux!</div>
+            <div class="cmd">sudo rm -f /etc/yum.repos.d/Rocky-*</div>
+            <div class="cmd">sudo dnf reinstall rocky-repos --nogpgcheck --repofrompath base,https://dl.rockylinux.org/pub/rocky/8/BaseOS/x86_64/os/ -y</div>
+            <div class="cmd">sudo dnf install epel-release -y</div>
+            <div class="cmd">sudo dnf install openvpn easy-rsa -y</div>
+            <div class="tip">💡 Als repos leeg zijn: sudo rpm -ivh --nodeps https://dl.rockylinux.org/pub/rocky/8/BaseOS/x86_64/os/Packages/r/rocky-repos-8.10-1.8.el8.noarch.rpm</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Netwerk instellen op Rocky Linux</div>
+            <div class="tip">💡 Eerst kijken welke adapters je hebt en hoe ze heten:</div>
+            <div class="cmd">ip addr  ← laat alle adapters zien, noteer de namen (bijv. ens160, ens224)</div>
+            <div class="tip">💡 Vast IP instellen op ens160 — <strong>verander 192.168.1.10 naar het IP uit de opdracht!</strong></div>
+            <div class="cmd">sudo nmcli con mod ens160 ipv4.addresses 192.168.1.10/24 ipv4.method manual</div>
+            <div class="cmd">sudo nmcli con down ens160 && sudo nmcli con up ens160  ← adapter herstarten zodat IP actief wordt</div>
+            <div class="tip">💡 Tweede adapter (NAT/internet) instellen op DHCP — <strong>verander ens224 naar de naam van jouw tweede adapter!</strong></div>
+            <div class="cmd">sudo nmcli con add type ethernet ifname ens224 con-name ens224 ipv4.method auto && sudo nmcli con up ens224</div>
+            <div class="cmd">ping 8.8.8.8  ← testen of internet werkt</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Stap 2 — EasyRSA instellen (op server)</div>
+            <div class="tip">💡 Dit kopieert de certificaat-tool naar de OpenVPN map</div>
+            <div class="cmd">sudo cp -rp /usr/share/easy-rsa/3.0/ /etc/openvpn/server/easyrsa3.0</div>
+            <div class="cmd">sudo cp -p /usr/share/doc/easy-rsa/vars.example /etc/openvpn/server/easyrsa3.0/vars</div>
+            <div class="tip">💡 Dan de organisatiegegevens aanpassen — de toets geeft je de exacte waarden!</div>
+            <div class="cmd">sudo nano /etc/openvpn/server/easyrsa3.0/vars</div>
+            <div class="tip">💡 Pas aan in vars (# weghalen):<br>
+set_var EASYRSA_REQ_COUNTRY "NL"<br>
+set_var EASYRSA_REQ_PROVINCE "Utrecht"<br>
+set_var EASYRSA_REQ_CITY "Utrecht"<br>
+set_var EASYRSA_REQ_ORG "Institute for ICT"<br>
+set_var EASYRSA_REQ_EMAIL "admin@ict.test"</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Stap 3 — Certificaten aanmaken (op server)</div>
+            <div class="tip">💡 Dit maakt alle sleutels en certificaten aan die VPN server en client nodig hebben</div>
+            <div class="cmd">cd /etc/openvpn/server/easyrsa3.0  ← ga naar de juiste map</div>
+            <div class="cmd">./easyrsa clean-all  ← mappen klaarmaken</div>
+            <div class="cmd">./easyrsa gen-dh  ← Diffie-Hellman sleutel aanmaken (duurt lang, normaal!)</div>
+            <div class="cmd">./easyrsa build-ca  ← Root certificaat aanmaken (vraagt om wachtwoord en naam)</div>
+            <div class="cmd">./easyrsa build-server-full server1 nopass  ← server certificaat zonder wachtwoord</div>
+            <div class="cmd">./easyrsa build-client-full client1  ← client certificaat (verander client1 naar hostnaam van client!)</div>
+            <div class="cmd">openvpn --genkey --secret /etc/openvpn/server/ta.key  ← extra beveiligingssleutel</div>
+            <div class="warn">⚠️ client naam = hostname van rocky2. Controleer met: hostname</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Stap 4 — Certs kopiëren naar client</div>
+            <div class="tip">💡 De client heeft de sleutels van de server nodig. We kopiëren ze via het netwerk naar /tmp op de client. <strong>Verander gebruiker naar jouw Linux gebruikersnaam en IP_CLIENT naar het NAT IP van rocky2!</strong></div>
+            <div class="cmd">sudo scp -p /etc/openvpn/server/ta.key /etc/openvpn/server/easyrsa3.0/pki/ca.crt /etc/openvpn/server/easyrsa3.0/pki/*/client1.{crt,key} gebruiker@IP_CLIENT:/tmp</div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-title">Stap 5 — Server configureren</div>
+            <div class="cmd">sudo nano /etc/openvpn/server/server.ovpn</div>
+            <div class="tip">💡 Inhoud server.ovpn:<br>
+port 1194<br>
+proto udp<br>
+dev tun<br>
+ca easyrsa3.0/pki/ca.crt<br>
+cert easyrsa3.0/pki/issued/server1.crt<br>
+key easyrsa3.0/pki/private/server1.key<br>
+dh easyrsa3.0/pki/dh.pem<br>
+tls-auth ta.key 0<br>
+server 10.31.33.0 255.255.255.0<br>
+ifconfig-pool-persist ipp.txt<br>
+push "redirect-gateway def1 bypass-dhcp"<br>
+keepalive 10 120<br>
+max-clients 2<br>
+user nobody<br>
+group nobody<br>
+persist-key<br>
+persist-tun<br>
+status openvpn-status.log<br>
+verb 3</div>
+            <div class="cmd">sudo firewall-cmd --add-service=openvpn --permanent; sudo firewall-cmd --reload</div>
+            <div class="cmd">sudo openvpn --cd /etc/openvpn/server --config server.ovpn</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Stap 6 — Client configureren (op rocky2)</div>
+            <div class="cmd">sudo dnf install epel-release -y && sudo dnf install openvpn -y</div>
+            <div class="cmd">sudo mv /tmp/ta.key /tmp/ca.crt /tmp/client1.* /etc/openvpn/client</div>
+            <div class="cmd">sudo chown root:root /etc/openvpn/client/{ta.key,ca.crt,client1.key,client1.crt}</div>
+            <div class="cmd">sudo chmod u=r,o-rwx /etc/openvpn/client/{ta.key,ca.crt,client1.key,client1.crt}</div>
+            <div class="cmd">sudo nano /etc/openvpn/client/client1.ovpn</div>
+            <div class="tip">💡 Inhoud client.ovpn:<br>
+client<br>
+dev tun<br>
+proto udp<br>
+remote IP_VPN_SERVER 1194<br>
+resolv-retry infinite<br>
+nobind<br>
+user nobody<br>
+group nobody<br>
+persist-key<br>
+persist-tun<br>
+ca ca.crt<br>
+cert client1.crt<br>
+key client1.key<br>
+remote-cert-tls server<br>
+tls-auth ta.key 1<br>
+verb 3</div>
+            <div class="cmd">sudo openvpn --cd /etc/openvpn/client --config client1.ovpn</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Stap 7 — IP Forwarding (routing via VPN)</div>
+            <div class="cmd">sudo sysctl -w net.ipv4.ip_forward=1</div>
+            <div class="cmd">echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.conf</div>
+            <div class="cmd">sudo firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -i tun+ -j ACCEPT --permanent</div>
+            <div class="cmd">sudo firewall-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -o ens160 -j MASQUERADE --permanent</div>
+            <div class="cmd">sudo firewall-cmd --reload</div>
+            <div class="tip">💡 Vervang ens160 door de interface richting het interne netwerk</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Netwerk instellen Rocky Linux</div>
+            <div class="cmd">ip addr</div>
+            <div class="cmd">sudo nmcli con mod ens160 ipv4.addresses 192.168.1.10/24 ipv4.method manual</div>
+            <div class="cmd">sudo nmcli con down ens160 && sudo nmcli con up ens160</div>
+            <div class="cmd">sudo nmcli con add type ethernet ifname ens224 con-name ens224 ipv4.method auto</div>
+            <div class="cmd">sudo nmcli con up ens224</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VyOS -->
+  <div class="card full-width">
+    <div class="card-header">
+      <span class="week-badge" style="background:#1e2d45;color:#94a3b8;">VyOS</span>
+      <span class="card-title">VyOS Router configureren</span>
+    </div>
+    <div class="card-body">
+      <div class="inline-grid">
+        <div>
+          <div class="section">
+            <div class="section-title">Basis — Hoe werkt VyOS?</div>
+            <div class="tip">💡 VyOS is een Linux router. Je typt commando's in de terminal. Er zijn twee modi:<br>
+            - <strong>Normale modus</strong> → alleen bekijken<br>
+            - <strong>Configuratie modus</strong> → instellingen wijzigen (na "configure")</div>
+            <div class="cmd">configure  ← ga naar configuratie modus (prompt wordt #)</div>
+            <div class="cmd">commit     ← activeer de wijzigingen</div>
+            <div class="cmd">save       ← sla op zodat het na herstart nog werkt</div>
+            <div class="cmd">exit       ← verlaat configuratie modus</div>
+            <div class="cmd">show interfaces  ← bekijk alle interfaces en IPs</div>
+            <div class="cmd">show ip route    ← bekijk de routingtabel</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">IP adressen instellen op interfaces</div>
+            <div class="tip">💡 Elke interface krijgt een IP in het netwerk waar hij op zit. <strong>Verander de IPs naar wat de opdracht vraagt!</strong></div>
+            <div class="cmd">configure</div>
+            <div class="cmd">set interfaces ethernet eth0 address 172.16.3.252/24  ← eth0 = Leased netwerk (verbinding met RRAS1)</div>
+            <div class="cmd">set interfaces ethernet eth1 address 192.168.5.252/24  ← eth1 = Amersfoort netwerk (intern LAN)</div>
+            <div class="cmd">set interfaces ethernet eth2 address 10.13.14.252/24  ← eth2 = DMZ2 netwerk</div>
+            <div class="cmd">set interfaces ethernet eth3 address dhcp  ← eth3 = NAT/internet (krijgt automatisch IP)</div>
+            <div class="cmd">commit && save</div>
+            <div class="warn">⚠️ Welke eth bij welk netwerk hoort → controleer MAC adressen in VMware Settings!</div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-title">RIP Routing instellen</div>
+            <div class="tip">💡 RIP zorgt dat VyOS automatisch routes uitwisselt met RRAS1. Je geeft op welke netwerken VyOS kent. <strong>Verander de netwerken naar wat de opdracht vraagt!</strong></div>
+            <div class="cmd">configure</div>
+            <div class="cmd">set protocols rip network 172.16.3.0/24  ← Leased netwerk (richting RRAS1)</div>
+            <div class="cmd">set protocols rip network 192.168.5.0/24  ← Amersfoort netwerk</div>
+            <div class="cmd">set protocols rip network 10.13.14.0/24   ← DMZ2 netwerk</div>
+            <div class="cmd">commit && save</div>
+            <div class="tip">💡 Internet interface (eth3/NAT) NIET toevoegen aan RIP!</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">NAT instellen (internet voor interne netwerken)</div>
+            <div class="tip">💡 NAT zorgt dat computers in het interne netwerk via VyOS internet kunnen gebruiken. Elke intern netwerk krijgt een eigen regel. <strong>Verander eth3 naar je internet interface en de netwerken naar wat de opdracht vraagt!</strong></div>
+            <div class="cmd">configure</div>
+            <div class="cmd">set nat source rule 100 outbound-interface eth3  ← eth3 = internet kant</div>
+            <div class="cmd">set nat source rule 100 source address '192.168.5.0/24'  ← intern netwerk</div>
+            <div class="cmd">set nat source rule 100 translation address masquerade  ← vertaal naar extern IP</div>
+            <div class="cmd">set nat source rule 200 outbound-interface eth3</div>
+            <div class="cmd">set nat source rule 200 source address '10.13.14.0/24'</div>
+            <div class="cmd">set nat source rule 200 translation address masquerade</div>
+            <div class="cmd">commit && save</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Default route instellen (internet)</div>
+            <div class="tip">💡 Dit zegt: "al het verkeer dat nergens anders naartoe kan, stuur naar het internet". De gateway is het IP van VMware NAT (192.168.220.2 of vergelijkbaar)</div>
+            <div class="cmd">set protocols static route 0.0.0.0/0 next-hop 192.168.220.2 distance 1</div>
+            <div class="cmd">commit && save</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALGEMEEN -->
+  <div class="card full-width">
+    <div class="card-header">
+      <span class="week-badge" style="background:#1e2d45;color:#94a3b8;">BASIS</span>
+      <span class="card-title">PC aan domein joinen & Domein aanmaken</span>
+    </div>
+    <div class="card-body">
+      <div class="inline-grid">
+        <div>
+          <div class="section">
+            <div class="section-title">PC aan domein joinen (GUI)</div>
+            <ol>
+              <li>Rechtermuisklik op <strong>Start</strong> → <strong>System</strong></li>
+              <li>Klik op <strong>Rename this PC (advanced)</strong></li>
+              <li>Klik op <strong>Change</strong></li>
+              <li>Computer name: bijv. <code>PC1</code></li>
+              <li>Klik op <strong>Domain</strong> → typ: <code>school.test</code></li>
+              <li>OK → vul in: <code>SCHOOL\Administrator</code> + wachtwoord</li>
+              <li>OK → <strong>Restart Now</strong></li>
+            </ol>
+            <div class="tip">💡 DNS moet correct ingesteld zijn anders werkt het niet!</div>
+            <div class="cmd">Add-Computer -DomainName "school.test" -Credential SCHOOL\Administrator -Restart</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">IP instellen (GUI — Windows 10/Server)</div>
+            <ol>
+              <li>Rechtermuisklik netwerk icoon rechtsonder → <strong>Open Network & Internet settings</strong></li>
+              <li><strong>Change adapter options</strong></li>
+              <li>Rechtermuisklik adapter → <strong>Properties</strong></li>
+              <li>Dubbelklik <strong>Internet Protocol Version 4 (TCP/IPv4)</strong></li>
+              <li>IP, subnet, gateway, DNS invullen → OK</li>
+            </ol>
+            <div class="warn">⚠️ DNS moet het IP van de DC zijn anders kun je het domein niet vinden</div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-title">Domein aanmaken (AD DS installeren)</div>
+            <ol>
+              <li>Server Manager → Manage → <strong>Add Roles and Features</strong></li>
+              <li>Next → Next → Next</li>
+              <li>Vink aan: <strong>Active Directory Domain Services</strong> → Add Features</li>
+              <li>Next → Next → Next → <strong>Install</strong></li>
+              <li>Na installatie: geel ⚠️ → <strong>Promote this server to a domain controller</strong></li>
+              <li>Kies <strong>Add a new forest</strong></li>
+              <li>Root domain name: bijv. <code>school.test</code></li>
+              <li>DSRM wachtwoord instellen → Next</li>
+              <li>Blijf Next klikken → <strong>Install</strong></li>
+              <li>Server herstart automatisch</li>
+            </ol>
+            <div class="tip">💡 Na herstart inloggen met SCHOOL\Administrator</div>
+          </div>
+          <hr class="divider">
+          <div class="section">
+            <div class="section-title">Computernaam wijzigen (Core server)</div>
+            <div class="cmd">Rename-Computer -NewName "Core1" -Restart</div>
+            <div class="section-title" style="margin-top:8px;">Of via sconfig:</div>
+            <ol>
+              <li>sconfig → optie <strong>2</strong> (Computer Name)</li>
+              <li>Nieuwe naam intypen → herstart</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <div class="card-body">
+      <div class="inline-grid">
+        <div>
+          <div class="section-title">Netwerk</div>
+          <div class="cmd">Get-NetIPConfiguration</div>
+          <div class="cmd">Get-NetAdapter</div>
+          <div class="cmd">ping 172.16.1.1</div>
+          <div class="cmd">ipconfig /all</div>
+          <div class="cmd">nslookup dc1.school.test</div>
+        </div>
+        <div>
+          <div class="section-title">Active Directory</div>
+          <div class="cmd">Get-ADDomain</div>
+          <div class="cmd">Get-ADDomainController -Filter *</div>
+          <div class="cmd">repadmin /syncall /AdeP</div>
+          <div class="cmd">gpupdate /force</div>
+          <div class="cmd">gpresult /r</div>
+        </div>
+      </div>
+      <hr class="divider">
+      <div class="tip">💡 <strong>IP schema:</strong> Rotterdam 172.16.1.0/24 | DMZ1 172.16.2.0/24 | Leased 172.16.3.0/24 | Amersfoort 192.168.5.0/24 | DMZ2 10.13.14.0/24</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
